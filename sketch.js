@@ -3,12 +3,12 @@ let mousePressedDown = false
 let speed = 10000;
 
 function preload() {
-  img = loadImage("images/tree-1.jpg");
+  img = loadImage("images/arch.jpg");
 }
 
 function setup() {
-  createCanvas(img.width, img.height);
-  img.resize(200, 200);
+  createCanvas(windowWidth, windowHeight);
+  img.resize(windowWidth, windowHeight);
   noSmooth();
 }
 
