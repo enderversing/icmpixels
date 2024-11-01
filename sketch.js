@@ -3,12 +3,12 @@ let mousePressedDown = false
 let speed = 10000;
 
 function preload() {
-  img = loadImage("images/city-night.jpg");
+  img = loadImage("images/tree-1.jpg");
 }
 
 function setup() {
   createCanvas(img.width, img.height);
-  img.resize(300, 300);
+  img.resize(200, 200);
   noSmooth();
 }
 
@@ -54,8 +54,20 @@ function sortPixels() {
 
   // Swap only if the brighter pixel is further from mouse and should be moved closer
   if (totalOne > totalTwo && distanceOne > distanceTwo) {
-    img.set(x, y, colorTwo);
-    img.set(neighborX, neighborY, colorOne);
+    // Swap
+    let indexOne = (x + y * img.width) * 4;
+    let indexTwo = (neighborX + neighborY * img.width) * 4;
+    
+    // reassign the pixels using all 3 rgb values
+    img.pixels[indexOne] = colorValuesTwo[0];
+    img.pixels[indexOne + 1] = colorValuesTwo[1];
+    img.pixels[indexOne + 2] = colorValuesTwo[2];
+    img.pixels[indexOne + 3] = 255;
+
+    img.pixels[indexTwo] = colorValuesOne[0];
+    img.pixels[indexTwo + 1] = colorValuesOne[1];
+    img.pixels[indexTwo + 2] = colorValuesOne[2];
+    img.pixels[indexTwo + 3] = 255;
   }
 }
 
