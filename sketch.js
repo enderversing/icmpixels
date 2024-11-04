@@ -1,14 +1,15 @@
 let img;
 let mousePressedDown = false
 let speed = 10000;
+let pixelationVar = 10;
 
 function preload() {
-  img = loadImage("images/arch.jpg");
+  img = loadImage("images/dark-city.jpeg");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  img.resize(windowWidth, windowHeight);
+  img.resize(windowWidth/pixelationVar, windowHeight/pixelationVar);
   noSmooth();
 }
 
