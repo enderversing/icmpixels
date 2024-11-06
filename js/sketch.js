@@ -1,8 +1,27 @@
 let img;
+let gui;
 let mousePressedDown = false;
 let speed = 10000;
 let pixelationVar = 5;
-let grainAmount = 1;
+let grainAmount = 5;
+
+let params = {
+  speed: 10000,
+  pixelationVar: 5,
+  grainAmount: 5,
+
+  speedMin: speed / 2,
+  speedMax: speed * 2,
+  speedStep: 1,
+
+  pixelationVarMin: pixelationVar / 2,
+  pixelationVarMax: pixelationVar * 2,
+  pixelationVarStep: 1,
+
+  grainAmountMin: 1,
+  grainAmountMax: 10,
+  grainAmountStep: 1,
+};
 
 function preload() {
   img = loadImage("assets/dark-city.jpeg");
@@ -14,6 +33,8 @@ function setup() {
   noSmooth();
 
   p5grain.setup();
+  gui = createGui("Change Variables");
+  gui.addObject(params);
 }
 
 function draw() {
@@ -64,13 +85,13 @@ function sortPixels() {
 
     // reassign the pixels using all 3 rgb values
     img.pixels[indexOne] = colorValuesTwo[0] - grainAmount;
-    img.pixels[indexOne + 1] = colorValuesTwo[1]- grainAmount;
+    img.pixels[indexOne + 1] = colorValuesTwo[1] - grainAmount;
     img.pixels[indexOne + 2] = colorValuesTwo[2] - grainAmount;
     img.pixels[indexOne + 3] = 255 - grainAmount;
 
-    img.pixels[indexTwo] = colorValuesOne[0]  - grainAmount;
+    img.pixels[indexTwo] = colorValuesOne[0] - grainAmount;
     img.pixels[indexTwo + 1] = colorValuesOne[1] - grainAmount;
-    img.pixels[indexTwo + 2] = colorValuesOne[2]- grainAmount;
+    img.pixels[indexTwo + 2] = colorValuesOne[2] - grainAmount;
     img.pixels[indexTwo + 3] = 255 - grainAmount;
   }
 }
