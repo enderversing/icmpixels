@@ -1,7 +1,8 @@
 let img;
-let mousePressedDown = false
+let mousePressedDown = false;
 let speed = 10000;
-let pixelationVar = 10;
+let pixelationVar = 5;
+let grainAmount = 1;
 
 function preload() {
   img = loadImage("assets/dark-city.jpeg");
@@ -9,8 +10,10 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  img.resize(windowWidth/pixelationVar, windowHeight/pixelationVar);
+  img.resize(windowWidth / pixelationVar, windowHeight / pixelationVar);
   noSmooth();
+
+  p5grain.setup();
 }
 
 function draw() {
@@ -38,17 +41,17 @@ function sortPixels() {
   // get color values for first pixel
   const colorValuesOne = getColValues(x, y);
   // get color values and turn them to color obj
-  let colorOne = color(colorValuesOne[0], colorValuesOne[1], colorValuesOne[2])
+  let colorOne = color(colorValuesOne[0], colorValuesOne[1], colorValuesOne[2]);
   // find total to use as brightness
-  let totalOne = colorValuesOne[0] + colorValuesOne[1] + colorValuesOne[2]
-  
+  let totalOne = colorValuesOne[0] + colorValuesOne[1] + colorValuesOne[2];
+
   // get color values for second pixel
   const colorValuesTwo = getColValues(neighborX, neighborY);
   // get color values and turn them to color obj
-  let colorTwo = color(colorValuesTwo[0],colorValuesTwo[1],colorValuesTwo[2])
+  let colorTwo = color(colorValuesTwo[0], colorValuesTwo[1], colorValuesTwo[2]);
   // find total to use as brightness
-  let totalTwo = colorValuesTwo[0] + colorValuesTwo[1] + colorValuesTwo[2]
-  
+  let totalTwo = colorValuesTwo[0] + colorValuesTwo[1] + colorValuesTwo[2];
+
   // determine distance to mouse
   let distanceOne = determineDist(x, y);
   let distanceTwo = determineDist(neighborX, neighborY);
@@ -58,22 +61,22 @@ function sortPixels() {
     // Swap
     let indexOne = (x + y * img.width) * 4;
     let indexTwo = (neighborX + neighborY * img.width) * 4;
-    
-    // reassign the pixels using all 3 rgb values
-    img.pixels[indexOne] = colorValuesTwo[0];
-    img.pixels[indexOne + 1] = colorValuesTwo[1];
-    img.pixels[indexOne + 2] = colorValuesTwo[2];
-    img.pixels[indexOne + 3] = 255;
 
-    img.pixels[indexTwo] = colorValuesOne[0];
-    img.pixels[indexTwo + 1] = colorValuesOne[1];
-    img.pixels[indexTwo + 2] = colorValuesOne[2];
-    img.pixels[indexTwo + 3] = 255;
+    // reassign the pixels using all 3 rgb values
+    img.pixels[indexOne] = colorValuesTwo[0] - grainAmount;
+    img.pixels[indexOne + 1] = colorValuesTwo[1]- grainAmount;
+    img.pixels[indexOne + 2] = colorValuesTwo[2] - grainAmount;
+    img.pixels[indexOne + 3] = 255 - grainAmount;
+
+    img.pixels[indexTwo] = colorValuesOne[0]  - grainAmount;
+    img.pixels[indexTwo + 1] = colorValuesOne[1] - grainAmount;
+    img.pixels[indexTwo + 2] = colorValuesOne[2]- grainAmount;
+    img.pixels[indexTwo + 3] = 255 - grainAmount;
   }
 }
 
 function determineDist(x, y) {
-  // // 
+  // //
   // get target coordinates
   const targetCoords = getTargetCoordinates();
 
@@ -88,7 +91,7 @@ function moveCloserToMouse(x, y) {
   // important to map
   // let targetX = map(mouseX, 0, width, 0, img.width);
   // let targetY = map(mouseY, 0, height, 0, img.height);
-  
+
   const targetCoords = getTargetCoordinates();
   // console.log(targetCoords)
 
@@ -98,38 +101,35 @@ function moveCloserToMouse(x, y) {
 
   if (x < targetCoords[0]) {
     // move 1 to the right
-    newX = x + 1;  
+    newX = x + 1;
   } else if (x > targetCoords[0]) {
     // move 1 to the left
-    newX = x - 1; 
+    newX = x - 1;
   }
 
   if (y < targetCoords[1]) {
     // move 1 down
-    newY = y + 1; 
+    newY = y + 1;
   } else if (y > targetCoords[1]) {
     // move 1 up
-    newY = y - 1; 
+    newY = y - 1;
   }
 
   // return new coordinates in array
   return [newX, newY];
 }
-  
+
 function getColValues(x, y) {
-  
   let i = (x + y * img.width) * 4;
-  
-  return [img.pixels[i],
-        img.pixels[i+1],
-        img.pixels[i+2]]
+
+  return [img.pixels[i], img.pixels[i + 1], img.pixels[i + 2]];
 }
 
 function getTargetCoordinates() {
   // important to map the values if not get error when trying to find the coordinates
   let targetX = map(mouseX, 0, width, 0, img.width);
   let targetY = map(mouseY, 0, height, 0, img.height);
-  
+
   return [targetX, targetY];
 }
 
